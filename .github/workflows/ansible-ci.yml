@@ -1,0 +1,29 @@
+name: Ansible CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  lint-and-syntax:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Ansible and ansible-lint
+        run: |
+          python -m pip install --upgrade pip
+          pip install ansible-core ansible-lint
+
+      - name: ansible-lint
+        run: ansible-lint
+
+      - name: Playbook syntax check
+        run: |
+          printf "[web]\nlocalhost ansible_connection=local\n" > inventory.ci.ini
+          ansible-playbook -i inventory.ci.ini setup.yml --syntax-check

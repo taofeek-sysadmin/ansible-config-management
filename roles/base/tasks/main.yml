@@ -1,0 +1,28 @@
+- name: Update packages
+  ansible.builtin.dnf:
+    name: "*"
+    state: latest
+
+- name: Install base utilities
+  ansible.builtin.dnf:
+    name:
+      - vim
+      - git
+      - curl
+      - unzip
+      - tar
+      - firewalld
+      - fail2ban
+    state: present
+
+- name: Enable and start firewalld
+  ansible.builtin.service:
+    name: firewalld
+    state: started
+    enabled: true
+
+- name: Enable and start fail2ban
+  ansible.builtin.service:
+    name: fail2ban
+    state: started
+    enabled: true

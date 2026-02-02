@@ -1,0 +1,5 @@
+- name: Add CS10 public key to CS9 authorized_keys for taofeekkomolafe
+  ansible.posix.authorized_key:
+    user: taofeekkomolafe
+    state: present
+    key: "{{ lookup('file', 'cs10_ed25519.pub') }}"

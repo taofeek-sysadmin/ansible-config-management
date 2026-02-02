@@ -1,0 +1,17 @@
+- name: Ensure nginx web root exists
+  ansible.builtin.file:
+    path: /usr/share/nginx/html
+    state: directory
+    mode: "0755"
+
+- name: Upload website tarball to CS9
+  ansible.builtin.copy:
+    src: website.tar.gz
+    dest: /tmp/website.tar.gz
+    mode: "0644"
+
+- name: Extract website into nginx web root on CS9
+  ansible.builtin.unarchive:
+    src: /tmp/website.tar.gz
+    dest: /usr/share/nginx/html
+    remote_src: true
